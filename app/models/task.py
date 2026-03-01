@@ -1,45 +1,49 @@
 from sqlalchemy import (
     Column, Integer, String,
     Boolean, DateTime, Enum,
-    ForeignKey, BigInteger,
-    UniqueConstraint
+    ForeignKey, BigInteger
 )
-from datetime import datetime
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 import enum
 
-
-class Base(DeclarativeBase):
-    pass
+from .base import Base
+from .associations import task_tags
 
 
 class PriorityTask(enum.Enum):
-    low = "low"
-    medium = "medium"
-    high = "high"
-    critical = "critical"
+    low = 'low'
+    medium = 'medium'
+    high = 'high'
+    critical = 'critical'
 
 
 class StatusType(enum.Enum):
-    task = "task"
-    bug = "bug"
-    feature = "feature"
+    task = 'task'
+    bug = 'bug'
+    feature = 'feature'
 
 
 class Task(Base):
-    __tablename__ = "tasks"
-    __table_args__ = (UniqueConstraint("column_id", "position"))
+    __tablename__ = 'tasks'
 
     id = Column(BigInteger, primary_key=True, index=True)
     title = Column(String(255), nullable=False)
     description = Column(String, nullable=True)
-    priority = Column(Enum(PriorityTask), default=PriorityTask.medium, nullable=False)
-    status_type = Column(Enum(StatusType), default=StatusType.task, nullable=False)
+    priority = Column(Enum(PriorityTask, name='priority_task'), default=PriorityTask.medium, nullable=False)
+    status_type = Column(Enum(StatusType, name='status_type'), default=StatusType.task, nullable=False)
     position = Column(Integer, nullable=False)
 
-    board_id = Column(BigInteger, ForeignKey("boards.id", ondelete="CASCADE"), nullable=False)
-    column_id = Column(BigInteger, ForeignKey("columns.id", ondelete="CASCADE"), nullable=False)
-    assignee_id = Column(BigInteger, ForeignKey("members.id"), nullable=True)
+    column_id = Column(BigInteger, ForeignKey('columns.id', ondelete='CASCADE'), nullable=False)
+    assignee_id = Column(BigInteger, ForeignKey('members.id'), nullable=True)
+    column = relationship('Column', back_populates='tasks')
+    assignee = relationship('Member', back_populates='tasks')
+    tags = relationship(
+        'Tag',
+        secondary=task_tags,
+        back_populates='tasks',
+        lazy='joined'
+    )
 
     start_date = Column(DateTime, nullable=True)
     deadline = Column(DateTime, nullable=True)
@@ -48,5 +52,5 @@ class Task(Base):
     is_blocked = Column(Boolean, default=False, nullable=False)
     blocked_reason = Column(String, nullable=True)
     completed_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), ullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)

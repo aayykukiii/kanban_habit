@@ -1,18 +1,19 @@
 from sqlalchemy import (Column, Integer, String,
-                         Boolean, DateTime, Enum, ForeignKey)
+                         Boolean, DateTime, ForeignKey, BigInteger)
 from datetime import datetime
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import relationship
+from .base import Base
 
 
-class Base(DeclarativeBase):
-    pass
-
-
-class Column(Base):
+class ColumnBase(Base):
     __tablename__ = 'columns'
 
-    id = Column(Integer, primary_kay=True)
+    id = Column(Integer, primary_key=True)
     title = Column(String, nullable=True)
-    position = Column(Integer)
-    limit_tasks = Column(Integer)
-    created_at = Column(DateTime, default=datetime.utcfromtimestamp)
+    position = Column(Integer, nullable=False)
+    board_id = Column(BigInteger, ForeignKey('boards.id', ondelete='CASCADE'), nullable=False)
+    board = relationship('Board', back_populates='columns')
+    tasks = relationship('Task', back_populates='column', cascade='all delete')
+    limit_tasks = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)

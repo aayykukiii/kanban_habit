@@ -6,16 +6,13 @@ from sqlalchemy.orm import relationship
 from .base import Base
 
 
-class Board(Base):
-    __tablename__ = 'boards'
+class Project(Base):
+    __tablename__ = 'projects'
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=True)
     description = Column(String)
-    project_id = Column(BigInteger, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False)
-    project = relationship('Project', back_populates='boards')
-    columns = relationship('Column', back_populates='board', cascade='all delete')
-    is_archived = Column(Boolean, default=False)
+    workspace_id = Column(BigInteger, ForeignKey('workspaces.id', ondelete='CASCADE'), nullable=False)
+    boards = relationship("Board", back_populates="project", cascade="all, delete")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
-    

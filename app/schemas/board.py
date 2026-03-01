@@ -6,13 +6,15 @@ from typing import Optional
 
 class BoardCreate(BaseModel):
     title: str
-    decsription: str
+    description: Optional[str] = None
+    project_id: int
 
 
 class BoardRead(BaseModel):
     id: int
     title: str
-    description: str
+    description: Optional[str]
+    project_id: int
     is_archived: bool
     created_at: datetime
     updated_at: datetime

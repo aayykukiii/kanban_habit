@@ -1,11 +1,9 @@
 from sqlalchemy import (Column, Integer, String,
                          Boolean, DateTime, Enum, ForeignKey)
 from datetime import datetime
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import aliased
 import enum
-
-class Base(DeclarativeBase):
-    pass
+from .base import Base
 
 
 class MemberRole(enum.Enum):
@@ -21,5 +19,5 @@ class Member(Base):
     full_name = Column(String, nullable=True)
     email = Column(String, unique=True, nullable=True)
     role = Column(Enum(MemberRole), default=MemberRole.member, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, insert_default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)

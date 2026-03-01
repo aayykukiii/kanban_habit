@@ -5,13 +5,13 @@ from typing import Optional
 
 class WorkSpaceCreate(BaseModel):
     name: str
-    decsription: str
+    description: Optional[str] = None
 
 
 class WorkSpaceRead(BaseModel):
     id: int
     name: str
-    description: str
+    description: Optional[str]
     is_archived: bool
     created_at: datetime
     updated_at: datetime
