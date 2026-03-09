@@ -20,6 +20,6 @@ class ProjectRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class ProjectUpdated(BaseModel):
+class ProjectUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None

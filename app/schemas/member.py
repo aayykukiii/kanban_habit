@@ -4,7 +4,6 @@ from typing import Optional
 from datetime import datetime
 
 
-
 class MemberRole(enum.Enum):
     member = 'member'
     viewer = 'viewer'

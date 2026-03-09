@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from datetime import datetime
-from .base import Base
+from app.models.base import Base
 
 
 class WorkSpace(Base):

@@ -3,7 +3,7 @@ from sqlalchemy import (Column, Integer, String,
                         ForeignKey, BigInteger)
 from datetime import datetime
 from sqlalchemy.orm import relationship
-from .base import Base
+from app.models.base import Base
 
 
 class Board(Base):
@@ -14,7 +14,7 @@ class Board(Base):
     description = Column(String)
     project_id = Column(BigInteger, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False)
     project = relationship('Project', back_populates='boards')
-    columns = relationship('Column', back_populates='board', cascade='all delete')
+    columns = relationship('ColumnBase', back_populates='board', cascade='all, delete')
     is_archived = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)

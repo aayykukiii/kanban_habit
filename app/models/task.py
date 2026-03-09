@@ -7,8 +7,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
 
-from .base import Base
-from .associations import task_tags
+from app.models.base import Base
+from app.models.associations import task_tags
 
 
 class PriorityTask(enum.Enum):
@@ -35,8 +35,9 @@ class Task(Base):
     position = Column(Integer, nullable=False)
 
     column_id = Column(BigInteger, ForeignKey('columns.id', ondelete='CASCADE'), nullable=False)
-    assignee_id = Column(BigInteger, ForeignKey('members.id'), nullable=True)
-    column = relationship('Column', back_populates='tasks')
+    member_id = Column(BigInteger, ForeignKey('members.id'), nullable=True)
+    member = relationship('Member', back_populates='tasks')
+    column = relationship('ColumnBase', back_populates='tasks')
     assignee = relationship('Member', back_populates='tasks')
     tags = relationship(
         'Tag',
@@ -52,5 +53,5 @@ class Task(Base):
     is_blocked = Column(Boolean, default=False, nullable=False)
     blocked_reason = Column(String, nullable=True)
     completed_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), ullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)

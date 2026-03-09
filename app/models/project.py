@@ -3,7 +3,7 @@ from sqlalchemy import (Column, Integer, String,
                         ForeignKey, BigInteger)
 from datetime import datetime
 from sqlalchemy.orm import relationship
-from .base import Base
+from app.models.base import Base
 
 
 class Project(Base):

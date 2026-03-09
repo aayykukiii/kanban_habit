@@ -1,1 +1,1 @@
-DATABASE_URL=''
+DATABASE_URL = "postgresql+asyncpg://istore:postgre@localhost:5432/kanban"
