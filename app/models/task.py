@@ -38,7 +38,6 @@ class Task(Base):
     member_id = Column(BigInteger, ForeignKey('members.id'), nullable=True)
     member = relationship('Member', back_populates='tasks')
     column = relationship('ColumnBase', back_populates='tasks')
-    assignee = relationship('Member', back_populates='tasks')
     tags = relationship(
         'Tag',
         secondary=task_tags,

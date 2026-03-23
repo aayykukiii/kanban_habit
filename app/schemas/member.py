@@ -1,10 +1,10 @@
 from pydantic import BaseModel, ConfigDict
-import enum
+from enum import Enum
 from typing import Optional
 from datetime import datetime
 
 
-class MemberRole(enum.Enum):
+class MemberRole(str, Enum):
     member = 'member'
     viewer = 'viewer'
     admin = 'admin'
@@ -21,10 +21,9 @@ class MemberRead(BaseModel):
     full_name: str
     email: str
     role: MemberRole
-    created_at: datetime 
-    updated_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        from_attributes = True
 
 
 

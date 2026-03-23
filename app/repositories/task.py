@@ -7,25 +7,25 @@ from app.models.tag import Tag
 from app.schemas.task import TaskCreate, TaskUpdate
 
 
-async def create_task(db: AsyncSession, task_data: TaskCreate):
+async def create_task(db: AsyncSession, task: TaskCreate):
     new_task = Task(
-        title=task_data.title,
-        description=task_data.description,
-        priority=task_data.priority,
-        status_type=task_data.status_type,
-        position=task_data.position,
-        column_id=task_data.column_id,
-        assignee_id=task_data.assignee_id,
-        start_date=task_data.start_date,
-        deadline=task_data.deadline,
-        estimated_time=task_data.estimated_time,
-        actual_time=task_data.actual_time,
-        is_blocked=task_data.is_blocked,
-        blocked_reason=task_data.blocked_reason
+        title=task.title,
+        description=task.description,
+        priority=task.priority,
+        status_type=task.status_type,
+        position=task.position,
+        column_id=task.column_id,
+        member_id=task.member_id,
+        start_date=task.start_date,
+        deadline=task.deadline,
+        estimated_time=task.estimated_time,
+        actual_time=task.actual_time,
+        is_blocked=task.is_blocked,
+        blocked_reason=task.blocked_reason
     )
-    if task_data.tag_ids:
+    if task.tag_ids:
         result = await db.execute(
-            select(Tag).where(Tag.id.in_(task_data.tag_ids))
+            select(Tag).where(Tag.id.in_(task.tag_ids))
         )
         tags = result.scalars().all()
         new_task.tags = tags
@@ -33,6 +33,7 @@ async def create_task(db: AsyncSession, task_data: TaskCreate):
     await db.commit()
     await db.refresh(new_task)
     return new_task
+
 
 
 async def get_all_tasks(db: AsyncSession):

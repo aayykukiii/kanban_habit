@@ -24,8 +24,7 @@ class TaskCreate(BaseModel):
     status_type: StatusType = StatusType.task
     position: int
     column_id: int
-    assignee_id: Optional[int] = None
-    tag_ids: Optional[list[int]] = None
+    member_id: Optional[int] = None
     start_date: Optional[datetime] = None
     deadline: Optional[datetime] = None
     estimated_time: Optional[int] = None
@@ -43,8 +42,7 @@ class TaskRead(BaseModel):
     status_type: StatusType
     position: int
     column_id: int
-    assignee_id: Optional[int]
-    tag_ids: list[int]
+    member_id: Optional[int]
     start_date: Optional[datetime]
     deadline: Optional[datetime]
     estimated_time: Optional[int]
@@ -65,11 +63,11 @@ class TaskUpdate(BaseModel):
     status_type: Optional[StatusType] = None
     position: Optional[int] = None
     column_id: Optional[int] = None
-    assignee_id: Optional[int] = None
-    tag_ids: Optional[list[int]] = None
+    member_id: Optional[int] = None
     start_date: Optional[datetime] = None
     deadline: Optional[datetime] = None
     estimated_time: Optional[int] = None
     actual_time: Optional[int] = None
     is_blocked: Optional[bool] = None
     blocked_reason: Optional[str] = None
+

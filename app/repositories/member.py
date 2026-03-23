@@ -16,7 +16,7 @@ async def create_member(db: AsyncSession, member: MemberCreate):
     new_member = Member (
         full_name=member.full_name,
         email=member.email,
-        role=member.role
+        role=member.role.value
     )
     db.add(new_member)
     await db.commit()

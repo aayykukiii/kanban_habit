@@ -18,7 +18,7 @@ class Member(Base):
     id = Column(Integer, primary_key=True)
     full_name = Column(String, nullable=True)
     email = Column(String, unique=True, nullable=True)
-    role = Column(Enum(MemberRole), default=MemberRole.member, nullable=False)
+    role = Column(Enum(MemberRole), default=MemberRole.member)
     tasks = relationship('Task', back_populates='member')
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)

@@ -8,7 +8,8 @@ from fastapi import HTTPException, status
 async def create_board(db: AsyncSession, board: BoardCreate):
     new_board = Board(
         title=board.title,
-        description=board.description
+        description=board.description,
+        project_id=board.project_id
     )
     db.add(new_board)
     await db.commit()

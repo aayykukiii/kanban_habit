@@ -10,7 +10,7 @@ async def create_tag(db: AsyncSession, tag: TagCreate):
         name=tag.name,
         color=tag.color
     )
-    db.add()
+    db.add(new_tag)
     await db.commit()
     await db.refresh(new_tag)
     return new_tag
