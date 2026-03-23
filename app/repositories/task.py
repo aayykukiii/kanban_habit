@@ -23,12 +23,6 @@ async def create_task(db: AsyncSession, task: TaskCreate):
         is_blocked=task.is_blocked,
         blocked_reason=task.blocked_reason
     )
-    if task.tag_ids:
-        result = await db.execute(
-            select(Tag).where(Tag.id.in_(task.tag_ids))
-        )
-        tags = result.scalars().all()
-        new_task.tags = tags
     db.add(new_task)
     await db.commit()
     await db.refresh(new_task)
@@ -38,19 +32,16 @@ async def create_task(db: AsyncSession, task: TaskCreate):
 
 async def get_all_tasks(db: AsyncSession):
     result = await db.execute(select(Task))
-    return result.scalars().all()
-
+    return result.scalars().unique().all()
 
 async def get_task_by_id(db: AsyncSession, task_id: int):
     result = await db.execute(select(Task).where(Task.id == task_id))
-    task = result.scalar_one_or_none()
-    if not task:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='task not found')
-    
+    return result.unique().scalar_one_or_none()
+
 
 async def update_task_by_id(db: AsyncSession, task_id: int, task_data: TaskUpdate):
     result = await db.execute(select(Task).where(Task.id == task_id))
-    db_task = result.scalar_one_or_none()
+    db_task = result.unique().scalar_one_or_none()
     if not db_task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='task not found')
     update_data = task_data.model_dump(exclude_unset=True)

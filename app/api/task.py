@@ -22,10 +22,7 @@ async def get_all(db: AsyncSession = Depends(get_db)):
 
 @router.get('/task/{task_id}', response_model=TaskRead)
 async def get_task(task_id: int, db: AsyncSession = Depends(get_db)):
-    task = await get_task_by_id(db, task_id)
-    if not task:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='tag not found')
-    return task
+    return await get_task_by_id(db, task_id)
 
 
 @router.put('/task/{task_id}', response_model=TaskUpdate)

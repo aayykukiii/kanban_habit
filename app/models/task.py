@@ -45,12 +45,12 @@ class Task(Base):
         lazy='joined'
     )
 
-    start_date = Column(DateTime, nullable=True)
-    deadline = Column(DateTime, nullable=True)
+    start_date = Column(DateTime(timezone=True), nullable=True)
+    deadline = Column(DateTime(timezone=True), nullable=True)
+    completed_at = Column(DateTime(timezone=True), nullable=True)
     estimated_time = Column(Integer, nullable=True)
     actual_time = Column(Integer, nullable=True)
     is_blocked = Column(Boolean, default=False, nullable=False)
     blocked_reason = Column(String, nullable=True)
-    completed_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
