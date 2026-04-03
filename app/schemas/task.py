@@ -33,7 +33,6 @@ class TaskCreate(BaseModel):
     blocked_reason: Optional[str] = None
 
 
-
 class TaskRead(BaseModel):
     id: int
     title: str
@@ -53,7 +52,6 @@ class TaskRead(BaseModel):
     created_at: datetime
     updated_at: datetime
     model_config = ConfigDict(from_attributes=True)
-
 
 
 class TaskUpdate(BaseModel):

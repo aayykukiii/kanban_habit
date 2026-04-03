@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["aysha <aayykuk@mail.ru>"]
 readme = "README.md"
-
 [tool.poetry.dependencies]
 python = ">=3.14"
 sqlalchemy = {version = ">=2.0.46,<3.0.0"}
@@ -12,6 +11,12 @@ fastapi = {version = ">=0.129.0,<0.130.0"}
 uvicorn = {version = ">=0.41.0,<0.42.0"}
 asyncpg = {version = ">=0.31.0,<0.32.0"}
 greenlet = {version = ">=3.3.2,<4.0.0"}
+python-jose = "^3.5.0"
+passlib = "^1.7.4"
+pydantic = {extras = ["email"], version = "^2.12.5"}
+email-validator = "^2.3.0"
+python-multipart = "^0.0.22"
+bcrypt = "4.0.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

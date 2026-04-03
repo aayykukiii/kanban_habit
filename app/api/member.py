@@ -3,7 +3,6 @@ from app.repositories.member import (create_member, get_all_member, get_member_b
                                  update_member_by_id, delete_member_by_id)
 from app.core.db import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.base import Base
 from app.schemas.member import MemberCreate, MemberRead, MemberUpdate
 
 
