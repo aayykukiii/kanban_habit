@@ -1,25 +1,28 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
-from typing import Optional
 
 
-class WorkSpaceCreate(BaseModel):
+class WorkSpaceBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str | None = None
+    owner_id: int
 
 
-class WorkSpaceRead(BaseModel):
-    id: int
-    name: str
-    description: Optional[str]
-    is_archived: bool
-    created_at: datetime
-    updated_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
+class WorkSpaceCreate(WorkSpaceBase):
+    pass
 
 
 class WorkSpaceUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    is_archived: Optional[bool] = None
+    name: str | None = None
+    description: str | None = None
+    is_archived: bool | None = None
+
+
+class WorkSpaceRead(WorkSpaceBase):
+    id: int
+    is_archived: bool
+    created_at: datetime
+    updated_at: datetime
+    owner_id: int
+    
+    model_config = ConfigDict(from_attributes=True)

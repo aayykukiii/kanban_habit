@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+import uvicorn
+
 from app.api import router
 from app.core.db import init_db
-import uvicorn
+
 
 app = FastAPI()
 
@@ -12,6 +14,7 @@ async def on_startup():
 
 
 app.include_router(router)
+
 
 if __name__ == '__main__':
     uvicorn.run(app=app)

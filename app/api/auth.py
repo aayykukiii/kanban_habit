@@ -6,7 +6,7 @@ from app.repositories.auth import register_user, login_user
 from app.api.deps import get_current_user
 from app.core.db import get_db
 
-router = APIRouter(prefix="/auth", tags=["Auth"])
+router = APIRouter()
 
 
 @router.post("/register", response_model=UserRead)

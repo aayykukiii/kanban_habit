@@ -1,15 +1,17 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from app.models.workspace import WorkSpace
-from app.schemas.workspace import WorkSpaceCreate, WorkSpaceUpdate
 from fastapi import HTTPException, status
 
+from app.models.workspace import WorkSpace
+from app.models.users import User
+from app.schemas.workspace import WorkSpaceCreate, WorkSpaceUpdate
 
 
 async def create_workspace(db: AsyncSession, workspace: WorkSpaceCreate):
     new_workspase = WorkSpace(
         name=workspace.name,
-        description=workspace.description
+        description=workspace.description,
+        owner_id=workspace.owner_id
     )
     db.add(new_workspase)
     await db.commit()
@@ -17,11 +19,14 @@ async def create_workspace(db: AsyncSession, workspace: WorkSpaceCreate):
     return new_workspase
 
 
+async def get_all_workspace(db: AsyncSession, user: User):
+    if user.role == "admin":
+        stmt = select(WorkSpace)
+    else:
+        stmt = select(WorkSpace).where(WorkSpace.owner_id == user.id)
 
-async def get_all_workspace(db: AsyncSession):
-    result = await db.execute(select(WorkSpace))
+    result = await db.execute(stmt)
     return result.scalars().all()
-
 
 
 async def get_workspace_by_id(db: AsyncSession, workspace_id: int):

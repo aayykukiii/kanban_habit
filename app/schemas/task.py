@@ -1,7 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 from enum import StrEnum
-from typing import Optional
 
 
 class PriorityTask(StrEnum):
@@ -17,55 +16,46 @@ class StatusType(StrEnum):
     feature = 'feature'
 
 
-class TaskCreate(BaseModel):
+class TaskBase(BaseModel):
     title: str
-    description: Optional[str] = None
+    description: str | None = None
     priority: PriorityTask = PriorityTask.medium
     status_type: StatusType = StatusType.task
     position: int
     column_id: int
-    member_id: Optional[int] = None
-    start_date: Optional[datetime] = None
-    deadline: Optional[datetime] = None
-    estimated_time: Optional[int] = None
-    actual_time: Optional[int] = None
+    member_id: int | None = None
+    start_date: datetime | None = None
+    deadline: datetime | None = None
+    estimated_time: int | None = None
+    actual_time: int | None = None
     is_blocked: bool = False
-    blocked_reason: Optional[str] = None
+    blocked_reason: str | None = None
 
 
-class TaskRead(BaseModel):
-    id: int
-    title: str
-    description: Optional[str]
-    priority: PriorityTask
-    status_type: StatusType
-    position: int
-    column_id: int
-    member_id: Optional[int]
-    start_date: Optional[datetime]
-    deadline: Optional[datetime]
-    estimated_time: Optional[int]
-    actual_time: Optional[int]
-    is_blocked: bool
-    blocked_reason: Optional[str]
-    completed_at: Optional[datetime]
-    created_at: datetime
-    updated_at: datetime
-    model_config = ConfigDict(from_attributes=True)
+class TaskCreate(TaskBase):
+    pass
 
 
 class TaskUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    priority: Optional[PriorityTask] = None
-    status_type: Optional[StatusType] = None
-    position: Optional[int] = None
-    column_id: Optional[int] = None
-    member_id: Optional[int] = None
-    start_date: Optional[datetime] = None
-    deadline: Optional[datetime] = None
-    estimated_time: Optional[int] = None
-    actual_time: Optional[int] = None
-    is_blocked: Optional[bool] = None
-    blocked_reason: Optional[str] = None
+    title: str | None = None
+    description: str | None = None
+    priority: PriorityTask | None = None
+    status_type: StatusType | None = None
+    position: int | None = None
+    column_id: int | None = None
+    member_id: int | None = None
+    start_date: datetime | None = None
+    deadline: datetime | None = None
+    estimated_time: int | None = None
+    actual_time: int | None = None
+    is_blocked: bool | None = None
+    blocked_reason: str | None = None
 
+
+class TaskRead(TaskBase):
+    id: int
+    completed_at: datetime | None = None
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

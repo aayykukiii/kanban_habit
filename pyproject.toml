@@ -17,6 +17,8 @@ pydantic = {extras = ["email"], version = "^2.12.5"}
 email-validator = "^2.3.0"
 python-multipart = "^0.0.22"
 bcrypt = "4.0.1"
+alembic = "^1.18.4"
+psycopg2-binary = "^2.9.12"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

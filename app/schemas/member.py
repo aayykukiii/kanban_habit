@@ -1,7 +1,5 @@
 from pydantic import BaseModel, ConfigDict
 from enum import Enum
-from typing import Optional
-from datetime import datetime
 
 
 class MemberRole(str, Enum):
@@ -10,24 +8,23 @@ class MemberRole(str, Enum):
     admin = 'admin'
 
 
-class MemberCreate(BaseModel):
+class MemberBase(BaseModel):
     full_name: str
     email: str
     role: MemberRole = MemberRole.member
 
 
-class MemberRead(BaseModel):
-    id: int
-    full_name: str
-    email: str
-    role: MemberRole
-
-    class Config:
-        from_attributes = True
-
+class MemberCreate(MemberBase):
+    pass
 
 
 class MemberUpdate(BaseModel):
-    full_name: Optional[str] = None
-    email: Optional[str] = None
-    role: Optional[MemberRole] = None
+    full_name: str | None = None
+    email: str | None = None
+    role: MemberRole | None = None
+
+
+class MemberRead(MemberBase):
+    id: int
+
+    model_config = ConfigDict(from_attributes=True)
