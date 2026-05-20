@@ -2,11 +2,15 @@ from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-SECRET_KEY = "supersecretkey"
-ALGORITHM = "HS256"
-
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 
 def hash_password(password: str):
     return pwd_context.hash(password[:72])

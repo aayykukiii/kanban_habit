@@ -61,6 +61,7 @@ async def update_member_by_id(db: AsyncSession, member_id: int, member_data: Mem
     await db.refresh(db_member)
     return db_member
 
+
 async def delete_member_by_id(db: AsyncSession, member_id: int, current_user: Member):
     result = await db.execute(select(Member).where(Member.id == member_id))
     db_member = result.scalar_one_or_none()

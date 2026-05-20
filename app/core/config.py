@@ -1,1 +1,8 @@
-DATABASE_URL = "postgresql+asyncpg://istore:postgre@localhost:5432/ansar"
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+DATABASE_URL = os.getenv("DATABASE_URL")

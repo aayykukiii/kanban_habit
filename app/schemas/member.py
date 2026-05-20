@@ -21,7 +21,6 @@ class MemberCreate(MemberBase):
 class MemberUpdate(BaseModel):
     full_name: str | None = None
     email: str | None = None
-    role: MemberRole | None = None
 
 
 class MemberRead(MemberBase):

@@ -753,6 +753,21 @@ files = [
 typing-extensions = ">=4.14.1"
 
 [[package]]
+name = "python-dotenv"
+version = "1.2.2"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "python_dotenv-1.2.2-py3-none-any.whl", hash = "sha256:1d8214789a24de455a8b8bd8ae6fe3c6b69a5e3d64aa8a8e5d68e694bbcb285a"},
+    {file = "python_dotenv-1.2.2.tar.gz", hash = "sha256:2c371a91fbd7ba082c2c1dc1f8bf89ca22564a087c2c287cd9b662adde799cf3"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "python-jose"
 version = "3.5.0"
 description = "JOSE implementation in Python"
@@ -978,4 +993,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14"
-content-hash = "a434bf50b720f64b12c762e0304b82fb5e1bd7a36acbb218cf62231ce797b4a6"
+content-hash = "3ea7bae86f1e2d25cce42255a5948fe29062c059087256d17b13c7bf64bb338f"

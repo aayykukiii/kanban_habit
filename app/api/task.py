@@ -57,7 +57,7 @@ async def update_task(
     return await update_task_by_id(db, task_id, task)
 
 
-@router.patch('/{task_id}/move', response_model=TaskRead)
+@router.patch("/{task_id}/move", response_model=TaskRead)
 async def move_task_endpoint(
     task_id: int,
     new_column_id: int,

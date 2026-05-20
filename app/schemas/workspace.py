@@ -15,6 +15,7 @@ class WorkSpaceCreate(WorkSpaceBase):
 class WorkSpaceUpdate(BaseModel):
     name: str | None = None
     description: str | None = None
+    owner_id: int | None = None
     is_archived: bool | None = None
 
 

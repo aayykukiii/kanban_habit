@@ -14,7 +14,7 @@ router = APIRouter()
 
 router.include_router(board_router, prefix='/boards', tags=['Boards'])
 router.include_router(column_router, prefix='/columns', tags=['Columns'])
-router.include_router(member_router, prefix='/members', tags=['Members'])
+router.include_router(member_router, prefix="/members", tags=["Members"])
 router.include_router(project_router, prefix='/projects', tags=['Projects'])
 router.include_router(tag_router, prefix='/tags', tags=['Tags'])
 router.include_router(task_router, prefix='/tasks', tags=['Tasks'])

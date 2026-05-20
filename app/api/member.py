@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
+from app.api.deps import get_current_user
 from app.repositories.member import (
     create_member,
     get_all_member,
@@ -37,21 +38,11 @@ async def get_member(member_id: int, db: AsyncSession = Depends(get_db)):
 
     return member
 
-
-@router.put('/{member_id}', response_model=MemberRead)
-async def update_member(
-    member_id: int,
-    member: MemberUpdate,
-    db: AsyncSession = Depends(get_db)
-):
-    updated = await update_member_by_id(db, member_id, member)
-
+@router.put("/{member_id}", response_model=MemberRead)
+async def update_member(member_id: int, member: MemberUpdate, db: AsyncSession = Depends(get_db), current_user = Depends(get_current_user)):
+    updated = await update_member_by_id(db, member_id, member, current_user)
     if not updated:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='member not found'
-        )
-
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="member not found")
     return updated
 
 
