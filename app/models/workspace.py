@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, Boolean, DateTime, ForeignKey
 from datetime import datetime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
 
@@ -15,3 +15,4 @@ class WorkSpace(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    projects = relationship("Project", back_populates="workspace")

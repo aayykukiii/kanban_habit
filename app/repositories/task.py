@@ -1,36 +1,18 @@
 from typing import Optional
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 from fastapi import HTTPException, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.task import Task
-from app.models.column import ColumnBase as Column
-from app.models.member import Member
-from app.models.tag import Tag
-from app.schemas.task import TaskCreate, TaskUpdate, PriorityTask, StatusType
+from app.schemas.task import PriorityTask, StatusType, TaskUpdate
 
 
-async def create_task(db: AsyncSession, task: TaskCreate):
-    new_task = Task(
-        title=task.title,
-        description=task.description,
-        priority=task.priority,
-        status_type=task.status_type,
-        position=task.position,
-        column_id=task.column_id,
-        member_id=task.member_id,
-        start_date=task.start_date,
-        deadline=task.deadline,
-        estimated_time=task.estimated_time,
-        actual_time=task.actual_time,
-        is_blocked=task.is_blocked,
-        blocked_reason=task.blocked_reason
-    )
-    db.add(new_task)
+async def create_task(db: AsyncSession, task: Task):
+    db.add(task)
     await db.commit()
-    await db.refresh(new_task)
-    return new_task
+    await db.refresh(task)
+    return task
 
 
 async def get_all_tasks(
@@ -45,7 +27,7 @@ async def get_all_tasks(
 ):
     query = select(Task)
     if search:
-        query = query.where(Task.title.ilike(f'%{search}%'))
+        query = query.where(Task.title.ilike(f"%{search}%"))
     if priority:
         query = query.where(Task.priority == priority)
     if status_type:
@@ -61,57 +43,29 @@ async def get_all_tasks(
 
 async def get_task_by_id(db: AsyncSession, task_id: int):
     result = await db.execute(select(Task).where(Task.id == task_id))
-    return result.unique().scalar_one_or_none()
+    return result.scalars().unique().one_or_none()
+
+
+async def save_task(db: AsyncSession, task: Task):
+    await db.commit()
+    await db.refresh(task)
+    return task
 
 
 async def update_task_by_id(db: AsyncSession, task_id: int, task_data: TaskUpdate):
-    result = await db.execute(select(Task).where(Task.id == task_id))
-    db_task = result.scalars().unique().one_or_none()
-
-    if not db_task:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='task not found')
-
+    task = await get_task_by_id(db, task_id)
+    if not task:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
     update_data = task_data.model_dump(exclude_unset=True)
-
-    if 'tag_ids' in update_data:
-        tag_ids = update_data.pop('tag_ids')
-        if tag_ids:
-            tag_result = await db.execute(select(Tag).where(Tag.id.in_(tag_ids)))
-            db_task.tags = tag_result.scalars().all()
-        else:
-            db_task.tags = []
-
     for field, value in update_data.items():
-        setattr(db_task, field, value)
+        setattr(task, field, value)
+    return await save_task(db, task)
 
-    await db.commit()
-    await db.refresh(db_task)
-    return db_task
-
-
-from sqlalchemy import select
-from fastapi import HTTPException
-
-async def move_task(db: AsyncSession, task_id: int, new_column_id: int, new_position: int):
-    result = await db.execute(select(Task).where(Task.id == task_id))
-    db_task = result.scalar_one_or_none()
-
-    if not db_task:
-        raise HTTPException(status_code=404, detail="task not found")
-
-    db_task.column_id = new_column_id
-    db_task.position = new_position
-
-    await db.commit()
-    await db.refresh(db_task)
-
-    return db_task
 
 async def delete_task_by_id(db: AsyncSession, task_id: int):
-    result = await db.execute(select(Task).where(Task.id == task_id))
-    db_task = result.scalar_one_or_none()
-    if not db_task:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='task not found')
-    await db.delete(db_task)
+    task = await get_task_by_id(db, task_id)
+    if not task:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
+    await db.delete(task)
     await db.commit()
-    return {'detail': 'task deleted'}
+    return {"detail": "Task deleted"}

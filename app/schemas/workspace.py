@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
+from app.schemas.project import ProjectRead
 
 
 class WorkSpaceBase(BaseModel):
@@ -25,5 +26,8 @@ class WorkSpaceRead(WorkSpaceBase):
     created_at: datetime
     updated_at: datetime
     owner_id: int
-    
+    projects: list[ProjectRead] = []
+
     model_config = ConfigDict(from_attributes=True)
+    
+    

@@ -16,3 +16,4 @@ class Project(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     boards: Mapped[list['Board']] = relationship('Board', back_populates='project', cascade='all, delete')
+    workspace = relationship("WorkSpace", back_populates="projects")
