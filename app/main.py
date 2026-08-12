@@ -1,12 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
 
 from app.api import router
 from app.core.db import init_db
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Kanban API",
+)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,10 +28,3 @@ async def on_startup():
 
 
 app.include_router(router)
-
-
-if __name__ == '__main__':
-    uvicorn.run(app=app)
-
-
-#redis, rabbitMQ, docker, micri-seer

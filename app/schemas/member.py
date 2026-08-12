@@ -1,11 +1,12 @@
-from pydantic import BaseModel, ConfigDict
 from enum import Enum
+
+from pydantic import BaseModel, ConfigDict
 
 
 class MemberRole(str, Enum):
-    member = 'member'
-    viewer = 'viewer'
-    admin = 'admin'
+    member = "member"
+    viewer = "viewer"
+    admin = "admin"
 
 
 class MemberBase(BaseModel):
@@ -21,6 +22,7 @@ class MemberCreate(MemberBase):
 class MemberUpdate(BaseModel):
     full_name: str | None = None
     email: str | None = None
+    role: MemberRole | None = None
 
 
 class MemberRead(MemberBase):
